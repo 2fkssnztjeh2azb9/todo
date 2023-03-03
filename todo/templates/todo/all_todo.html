@@ -1,0 +1,40 @@
+{% extends 'todo/base.html' %}
+{% load django_bootstrap5 %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+
+<div class="card container my-1 mb-2 d-flex justify-content-center" style="width: 40rem;">
+  <div class="card-body">
+    <div class="card-title"><h5 class="text-center">todo</h5>
+    </div>
+  </div>
+  <div class="card-text">
+    <ul class="list-group list-group-flush">
+      <form class="input-group" action='{% url 'todo:add' %}' method='post'>
+        {% csrf_token %}
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">add</button>
+          </div>
+          {{form.text}}
+      </form>
+      {% for todo in todos %}<li class="list-group-item">
+        <div class="btn-group" role="group" aria-label="todo controls">
+          <a class="btn" href='{% url 'todo:change_status' todo.id %}' method='post'>✓</a>
+          <a class="btn" href='{% url 'todo:delete_todo' todo.id %}' method='post'>x</a>
+        </div>
+        <span>
+        {% if todo.done %}
+          <del>{{todo}}</del>
+        {% else %}
+          {{todo}}
+        {% endif %}
+        </span>
+      </li>
+      {% empty %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock content %}
+
